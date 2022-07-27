@@ -44,6 +44,24 @@ app.delete("/api/movies/:id",(req,res)=>{
     })
 })
 
+app.get("/api/reviews",(req,res)=>{
+    db.query("SELECT reviews.id, movie_name AS title, review FROM reviews JOIN movies ON reviews.movie_id=movies.id",(err,data)=>{
+        if(err){
+            throw err
+        }
+        res.json(data);
+    })
+})
+
+app.put("/api/reviews/:id",(req,res)=>{
+    db.query("UPDATE reviews SET review=? WHERE id= ?",[req.body.review,req.params.id],(err,data)=>{
+        if(err){
+            throw err
+        }
+        res.json(data);
+    })
+})
+
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 });
